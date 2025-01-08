@@ -9,7 +9,7 @@ def main():
     print("Reward for losing a warrior:", calculate_reward("lose_unit", unit_type="warrior"))
     print("Reward for upgrading a city with 3 population gain:", calculate_reward("upgrade_city", city_population_gain=3))
     print("Reward for placing a monument:", calculate_reward("place_structure", structure="monument"))
-    print("Reward for researching a Tier 2 technology:", calculate_reward("research_tech", tech_tier=2))
+    print("Reward for researching a tier 2 technology:", calculate_reward("research_tech", tech_tier=2))
     print("Reward for discovering a fog tile:", calculate_reward("discover_fog"))
     print("Reward for gaining a territory tile:", calculate_reward("gain_territory"))
     print("Reward for losing a city with 2 population:", calculate_reward("lose_city", city_population_loss=2))

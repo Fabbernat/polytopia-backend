@@ -52,4 +52,7 @@ def calculate_reward(action, **kwargs):
     if action == "discover_fog":
         return 5
 
+    if action == "park":
+        return 250
+
     return 0  # Default reward for neutral actions

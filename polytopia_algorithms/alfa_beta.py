@@ -1,4 +1,3 @@
-from main import vegallapot, hasznossag, INF, n_szomszedai
 
 def MaxErtek(n, alfa, beta):
     if vegallapot(n):
@@ -25,3 +24,4 @@ def MinErtek(n, alfa, beta):
             return min
         beta = min(min, beta)
     return min
+

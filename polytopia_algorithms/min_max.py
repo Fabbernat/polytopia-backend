@@ -1,4 +1,3 @@
-from main import vegallapot, hasznossag, INF, n_szomszedai, maxErtek
 
 
 def minmax(n):

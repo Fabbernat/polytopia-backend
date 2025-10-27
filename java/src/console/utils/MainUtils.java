@@ -1,36 +1,9 @@
-import Settings.ValidCommands;
+package console.utils;
 
-import java.util.Scanner;
+import static console.Main.log;
 
-public class Main {
-
-  public static void log(String message) {
-    System.out.println(message);
-  }
-
-  static String farewellMessage = "Goodbye Commander!";
-
-  public static void main(String[] args) {
-    Scanner scanner = new Scanner(System.in);
-    log("Polytopia CLI started. Type `start \"Game Name\"` or just `start` to start a new game.\n Example: start \"Misty Clouds\"\nType `help` to get the list of available commands.\n`exit` to quit.");
-
-    while (true) {
-      log ("> ");
-      String input = scanner.nextLine().trim();
-      input = input.toLowerCase();
-
-      if ("exit".equals(input) || "quit".equals(input)) {
-        log(farewellMessage);
-        break;
-      }
-
-      handleCommand(input);
-    }
-    log("Press any key to exit...");
-    scanner.nextLine();
-  }
-
-  private static void handleCommand(String input){
+public class MainUtils {
+  public static void handleCommand(String input){
     if (input.isEmpty())
       return;
 
@@ -62,7 +35,7 @@ public class Main {
   private static int stars = 5;
   private static int score = 500;
   private static int turn = 0;
-  private static String tabulators = "\t\t\t\t\t\t\t\t";
+  private static final String tabulators = "\t\t\t\t\t\t\t\t";
 
   private static void report() {
     log("|--- " + stars + " stars | " + score + " score | " + turn + "th turn" + " ---|" + tabulators + "\n");

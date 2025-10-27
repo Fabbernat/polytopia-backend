@@ -3,6 +3,7 @@ package console.utils;
 import static console.Main.log;
 
 public class MainUtils {
+  private static int guid = 1;
   public static void handleCommand(String input){
     if (input.isEmpty())
       return;
@@ -14,12 +15,12 @@ public class MainUtils {
 
     // Check menu base commands
     for (String command : ValidCommands.MENU_COMMANDS) {
-      if ("start".startsWith(command)) {
+      if (input.startsWith(command)) {
         String gameName = getRemainder(input, command);
-        report("New game started: " + gameName);
-      } else if ("delete".startsWith(command)) {
-        String gameName = getRemainder(input, command);
-        report("Deleted game: " + gameName);
+        if ("start".equals(command))
+          report("New game started: " + (!gameName.trim().isEmpty() ? gameName : "Game " + guid++));
+        else if ("delete".equals(command))
+          report("Deleted game: " + gameName);
       }
     }
     if (ValidCommands.MENU_COMMANDS.contains(input)) {
@@ -28,8 +29,12 @@ public class MainUtils {
     }
   }
 
-  private static String getRemainder(String input, String cmd) {
-    return input.substring(cmd.length()).trim();
+  private static String getRemainder(String input, String command) {
+    if (input.length() <= command.length()) {
+      return ""; // no remainder
+    }
+
+    return input.substring(command.length()).trim();
   }
 
   private static int stars = 5;

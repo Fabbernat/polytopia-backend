@@ -17,7 +17,7 @@ public class Main {
     log("Polytopia CLI started. Type `start \"Game Name\"` or just `start` to start a new game.\n Example: start \"Misty Clouds\"\nType `help` to get the list of available commands.\n`exit` to quit.");
 
     while (true) {
-      log ("> ");
+      System.out.print ("> ");
       String input = scanner.nextLine().trim();
       input = input.toLowerCase();
 

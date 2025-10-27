@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class ValidCommands {
   // --- Command definitions ---
   private static final Set<String> menuCommands = Set.of(
-          "start", "delete"
+          "start", "delete", "games"
   );
 
 

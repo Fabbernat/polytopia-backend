@@ -1,9 +1,10 @@
-package console.utils;
+package console.app;
+
+import console.utils.ValidCommands;
 
 import static console.Main.log;
 
-public class MainUtils {
-  private static int guid = 1;
+public class AppUtils {
   public static void handleCommand(String input){
     if (input.isEmpty())
       return;
@@ -18,7 +19,7 @@ public class MainUtils {
       if (input.startsWith(command)) {
         String gameName = getRemainder(input, command);
         if ("start".equals(command))
-          report("New game started: " + (!gameName.trim().isEmpty() ? gameName : "Game " + guid++));
+          report("New game started: " + (!gameName.trim().isEmpty() ? gameName : "Game " + App.guid++));
         else if ("delete".equals(command))
           report("Deleted game: " + gameName);
       }

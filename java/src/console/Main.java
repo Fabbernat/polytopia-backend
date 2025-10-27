@@ -1,6 +1,7 @@
 package console;
 
-import console.utils.MainUtils;
+import console.app.App;
+import console.app.AppUtils;
 
 import java.util.Scanner;
 
@@ -13,6 +14,7 @@ public class Main {
   static String farewellMessage = "Goodbye Mighty Ruler!";
 
   public static void main(String[] args) {
+    App app = new App();
     Scanner scanner = new Scanner(System.in);
     log("Polytopia CLI started. Type `start \"Game Name\"` or just `start` to start a new game.\n Example: start \"Misty Clouds\"\nType `help` to get the list of available commands.\n`exit` to quit.");
 
@@ -26,7 +28,7 @@ public class Main {
         break;
       }
 
-      MainUtils.handleCommand(input);
+      AppUtils.handleCommand(input);
     }
     log("Press any key to exit...");
     scanner.nextLine();

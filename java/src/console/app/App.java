@@ -16,7 +16,7 @@ import static console.Main.log;
 
 public class App {
   static int guid = 1;
-  List<String> games = new ArrayList<>();
+  static List<String> games = new ArrayList<>();
 
   public App() {
     readGuidReferenceDotTxt();
@@ -67,8 +67,9 @@ public class App {
               Paths.get(Objects.requireNonNull(App.class.getResource("/games.txt")).toURI())
       );
       log("Read in games: ");
-      lines.forEach(System.out::println);
+
       games.addAll(lines);
+      reportGames();
     } catch (IOException | URISyntaxException ioException) {
       ioException.printStackTrace();
     }
@@ -82,6 +83,10 @@ public class App {
     } catch (IOException e) {
       e.printStackTrace();
     }*/
+  }
+
+  public static void reportGames() {
+    games.forEach(System.out::println);
   }
 
 }

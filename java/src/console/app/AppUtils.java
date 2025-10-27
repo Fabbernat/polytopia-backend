@@ -23,7 +23,7 @@ public class AppUtils {
         else if ("delete".equals(command))
           report("Deleted game: " + gameName);
       } else if ("games".equals(command)) {
-        report("Games list:" + App.games.toString());
+        report("Games list: " + App.games.toString());
       }
     }
     if (ValidCommands.MENU_COMMANDS.contains(input)) {

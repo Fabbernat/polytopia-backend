@@ -1,4 +1,4 @@
-﻿## Read Me:
+﻿# Read Me:
 
 Welcome to the `polytopia_python` repo! Have a look around and familiarise yourself with some of the code that's already
 here.
@@ -16,8 +16,11 @@ The `settings.py` file contains some settings variables that are mostly unused a
 these is the `CHANNEL_ATTRIBUTES` object, which contains descriptions of what each 'channel' in the game state array
 will correspond to.
 
-### Fabbernat edit:
+# Fabbernat's contribution:
 
 Polytopia UI can be found at https://github.com/Fabbernat/Polytopia as an ASP.NET app.
 
-I've added a score counter
+I've added a score counter Python module and a Java console app
+
+## Java console app
+This is intended to be the main app at some point and will simulate the core logic of the gameplay like map generation, tech tree and even combat

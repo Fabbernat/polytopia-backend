@@ -22,24 +22,25 @@ public class App {
 
 
   private void readGuidReference() {
-    try (InputStream input = App.class.getResourceAsStream("/guidReference.txt")) {
-      if (input == null) {
-        log("guidReference.txt not found!");
-        return;
+      try (InputStream input = App.class.getResourceAsStream("/guidReference.txt")) {
+          if (input == null) {
+              log("guidReference.txt not found!");
+              return;
+          }
+          log(input.toString());
+
+          List<String> lines = new java.io.BufferedReader(
+                  new java.io.InputStreamReader(input)
+          ).lines().toList();
+
+          log("Read in guid reference:");
+          lines.forEach(System.out::println);
+
+          guid = Integer.parseInt(lines.getFirst().trim());
+
+      } catch (Exception e) {
+          e.printStackTrace();
       }
-      List<String> lines = Files.readAllLines(
-              Paths.get(Objects.requireNonNull(App.class.getResource("/guidReference.txt")).toURI())
-      );
-      log("Read in guid reference: ");
-      lines.forEach(System.out::println);
-      try {
-        guid = Integer.parseInt(lines.getFirst());
-      } catch (NumberFormatException numberFormatException) {
-        numberFormatException.printStackTrace();
-      }
-    } catch (IOException | URISyntaxException exception) {
-      exception.printStackTrace();
-    }
   }
 
     private void readGames() {

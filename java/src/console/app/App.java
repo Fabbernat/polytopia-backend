@@ -13,13 +13,17 @@ import static console.Main.log;
 
 public class App {
   static int guid = 1;
-  static List<String> games = new ArrayList<>();
+  private List<String> games = new ArrayList<>();
 
   public App() {
     readGuidReference();
     readGames();
   }
 
+  public List<String> getGames() {
+      readGames();
+      return games;
+  }
 
   private void readGuidReference() {
       try (InputStream input = App.class.getResourceAsStream("/guidReference.txt")) {
@@ -65,7 +69,7 @@ public class App {
     }
 
 
-    public static void reportGames() {
+    public void reportGames() {
     games.forEach(System.out::println);
   }
 

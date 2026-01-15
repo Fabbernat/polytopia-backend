@@ -32,11 +32,14 @@ public class AppUtils {
                         }
 
                         gameName = capitalizedGameName.toString().trim();
-
                         report("New game started: " + (!gameName.trim().isEmpty() ? gameName : "Game " + App.guid++));
                     }
                     case "delete" -> report("Deleted game: " + gameName);
-                    case "games" -> report("Games list: " + App.games.toString());
+
+                    case "games" -> {
+                        App app =  new App();
+                        report("Games list: " + app.getGames().toString());
+                    }
                 }
                 return;
             }

@@ -19,8 +19,22 @@ public class AppUtils {
             if (input.startsWith(command)) {
                 String gameName = getRemainder(input, command);
                 switch (command) {
-                    case "start" ->
-                            report("New game started: " + (!gameName.trim().isEmpty() ? gameName.substring(0, 1).toUpperCase() + gameName.substring(1) : "Game " + App.guid++));
+                    case "start" -> {
+                        StringBuilder capitalizedGameName = new StringBuilder();
+
+                        for (String word : gameName.trim().split("\\s+")) {
+                            if (!word.isEmpty()) {
+                                capitalizedGameName
+                                        .append(word.substring(0, 1).toUpperCase())
+                                        .append(word.substring(1).toLowerCase())
+                                        .append(" ");
+                            }
+                        }
+
+                        gameName = capitalizedGameName.toString().trim();
+
+                        report("New game started: " + (!gameName.trim().isEmpty() ? gameName : "Game " + App.guid++));
+                    }
                     case "delete" -> report("Deleted game: " + gameName);
                     case "games" -> report("Games list: " + App.games.toString());
                 }

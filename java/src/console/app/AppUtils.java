@@ -10,7 +10,7 @@ public class AppUtils {
             return;
 
         if (input.equals("help")) {
-            log("Available commands:" + ValidCommands.ALL_COMMANDS);
+            log("Available commands: " + String.join(", ", ValidCommands.ALL_COMMANDS));
             return;
         }
 

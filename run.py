@@ -1,15 +1,15 @@
-# Windows HP templates route: C:\Users\HP\PycharmProjects\polytopia_python\app\templates
-# Windows truncated templates route: C:\PycharmProjects\polytopia_python\app\templates
-# relative templates route: polytopia_python\app\templates
+# Windows HP templates route: C:\Users\HP\PycharmProjects\polytopia_python\consoleApp\templates
+# Windows truncated templates route: C:\PycharmProjects\polytopia_python\consoleApp\templates
+# relative templates route: polytopia_python\consoleApp\templates
 from flask import Flask, render_template
 
-# Create a Flask app
-app = Flask(__name__)
+# Create a Flask consoleApp
+consoleApp = Flask(__name__)
 
 # add Index page, Privacy, Dashboard, About, Settings, HallOfFame and ThroneRoom routes! I have the content for them, you just make the routes and the navigation!
 
 # Route for the homepage
-@app.route("/")
+@consoleApp.route("/")
 def home():
     return (
         """
@@ -78,12 +78,12 @@ def home():
     """
             )
 
-@app.route("/game")
+@consoleApp.route("/game")
 def game():
     return ""
 # Route for the Privacy page
 # TODO Fix error Template file 'polytopia_python' not found
-@app.route("/privacy")
+@consoleApp.route("/privacy")
 def privacy():
     return
 """
@@ -107,29 +107,29 @@ def privacy():
 
 # Route for the Dashboard page
 # TODO Fix error Template file 'dashboard. html' not found
-@app.route("/dashboard")
+@consoleApp.route("/dashboard")
 def dashboard():
     return render_template("dashboard.html")
 
 # Route for the About page
-@app.route("/about")
+@consoleApp.route("/about")
 def about():
     return render_template("about.html")
 
 # Route for the Settings page
-@app.route("/settings")
+@consoleApp.route("/settings")
 def settings():
     return render_template("settings.html")
 
 # Route for the Hall of Fame page
-@app.route("/hall-of-fame")
+@consoleApp.route("/hall-of-fame")
 def hall_of_fame():
     return render_template("hall_of_fame.html")
 
 # Route for the Throne Room page
-@app.route("/throne-room")
+@consoleApp.route("/throne-room")
 def throne_room():
     return render_template("throne_room.html")
 
 if __name__ == "__main__":
-    app.run(debug=True, host="127.0.0.1", port=5000)
+    consoleApp.run(debug=True, host="127.0.0.1", port=5000)

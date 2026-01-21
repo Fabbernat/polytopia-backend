@@ -4,7 +4,7 @@ import console.utils.ValidCommands;
 
 import static console.Main.log;
 
-public class AppUtils {
+public class ConsoleAppUtils {
     public static void handleCommand(String input) {
         if (input.isEmpty())
             return;
@@ -32,13 +32,13 @@ public class AppUtils {
                         }
 
                         gameName = capitalizedGameName.toString().trim();
-                        report("New game started: " + (!gameName.trim().isEmpty() ? gameName : "Game " + App.guid++));
+                        report("New game started: " + (!gameName.trim().isEmpty() ? gameName : "Game " + ConsoleApp.guid++));
                     }
                     case "delete" -> report("Deleted game: " + gameName);
 
                     case "games" -> {
-                        App app =  new App();
-                        report("Games list: " + app.getGames().toString());
+                        ConsoleApp consoleApp =  new ConsoleApp();
+                        report("Games list: " + consoleApp.getGames().toString());
                     }
                 }
                 return;

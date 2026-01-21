@@ -18,9 +18,9 @@ will correspond to.
 
 # Fabbernat's contribution:
 
-Polytopia UI can be found at https://github.com/Fabbernat/Polytopia as an ASP.NET app.
+Polytopia UI can be found at https://github.com/Fabbernat/Polytopia as an ASP.NET consoleApp.
 
-I've added a score counter Python module and a Java console app
+I've added a score counter Python module and a Java console consoleApp
 
-## Java console app
-This is intended to be the main app at some point and will simulate the core logic of the gameplay like map generation, tech tree and even combat
+## Java console consoleApp
+This is intended to be the main consoleApp at some point and will simulate the core logic of the gameplay like map generation, tech tree and even combat

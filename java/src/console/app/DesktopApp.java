@@ -5,7 +5,6 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;  // <-- ide kell!
 import java.util.Random;
 
 public class DesktopApp {
@@ -49,7 +48,8 @@ public class DesktopApp {
         }
 
         // 2️⃣ Place tribe capitals AFTER generation
-        replaceTilesWithTribeCapitals(4);
+        replaceTilesWithCities(4, CAPITAL);
+        fillTheRestOfTheMapWithVillages();
 
         frame.add(gridPanel);
         frame.setSize(600, 600);
@@ -57,7 +57,13 @@ public class DesktopApp {
         frame.setVisible(true);
     }
 
-    private static void replaceTilesWithTribeCapitals(int count) {
+    /**
+     * puts the given number of capitals to the map with SOME STRICT RULES:
+     * no capital can be within 2 tiles of the edge of the map or each other
+     * @param count number of players==number of capitals
+     * @param what feature to be applied
+     */
+    private static void replaceTilesWithCities(int count,  Color what) {
         int placed = 0;
         java.util.List<Point> capitals = new ArrayList<>();
 
@@ -84,5 +90,14 @@ public class DesktopApp {
         }
         return true; // jó hely
     }
+
+    /**
+     * fills the world with villages with SOME STRICT RULES:
+     * finds the spots that are far enough (at least 2 tiles) from capitals and other villages.
+     * Villages can spawn on water.
+     */
+    private static void fillTheRestOfTheMapWithVillages() {
+    }
+
 
 }

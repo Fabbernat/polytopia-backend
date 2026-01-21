@@ -16,7 +16,8 @@ public class DesktopApp {
 
     private static final Color LAND = Color.GREEN;
     private static final Color WATER = Color.BLUE;
-    private static final Color CAPITAL = new Color(139, 69, 19); // brown
+    private static final Color CAPITAL = new Color(117, 117, 117); // gray
+    private static final Color VILLAGE = new Color(139, 75, 19, 255); // brown
 
     private static final JPanel[][] tiles = new JPanel[ROWS][COLS];
     private static final Random random = new Random();

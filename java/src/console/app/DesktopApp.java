@@ -12,7 +12,7 @@ public class DesktopApp {
 
     private static final int ROWS = 16;
     private static final int COLS = 16;
-    private static final double SCALE = 0.15; // lower = larger regions
+    private static final double SCALE = 0.18; // lower = larger regions
 
     private static final Color LAND = Color.GREEN;
     private static final Color WATER = Color.BLUE;
@@ -39,7 +39,7 @@ public class DesktopApp {
                 double value = noise.noise(row * SCALE, col * SCALE);
                 double normalized = (value + 1) / 2.0;
 
-                tile.setBackground(normalized > 0.4 ? LAND : WATER);
+                tile.setBackground(normalized > 0.45 ? LAND : WATER);
                 tile.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
                 tiles[row][col] = tile;

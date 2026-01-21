@@ -5,12 +5,13 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class DesktopApp {
 
-    private static final int ROWS = 16;
-    private static final int COLS = 16;
+    private static final int ROWS = 30;
+    private static final int COLS = 30;
     private static final double SCALE = 0.18; // lower = larger regions
 
     private static final Color LAND = Color.GREEN;
@@ -20,6 +21,11 @@ public class DesktopApp {
 
     private static final JPanel[][] tiles = new JPanel[ROWS][COLS];
     private static final Random random = new Random();
+
+    // Statikus lista a kapitalok pozícióinak tárolására
+    private static final List<Point> capitals = new ArrayList<>();
+    // Statikus lista a falvak pozícióinak tárolására
+    private static final List<Point> villages = new ArrayList<>();
 
     public DesktopApp() {
         SwingUtilities.invokeLater(DesktopApp::createAndShowUI);
@@ -49,7 +55,7 @@ public class DesktopApp {
 
         // 2️⃣ Place tribe capitals AFTER generation
         replaceTilesWithCities(4, CAPITAL);
-        fillTheRestOfTheMapWithVillages();
+        fillTheRestOfTheMapWithVillages(); // pl. 10 falu
 
         frame.add(gridPanel);
         frame.setSize(600, 600);
@@ -58,14 +64,13 @@ public class DesktopApp {
     }
 
     /**
-     * puts the given number of capitals to the map with SOME STRICT RULES:
-     * no capital can be within 2 tiles of the edge of the map or each other
-     * @param count number of players==number of capitals
-     * @param what feature to be applied
+     * puts the given number of cities (capital or village) to the map with SOME STRICT RULES:
+     * no city can be within minDistance tiles of the edge of the map or each other
+     * @param count number of cities to place
+     * @param what color to paint
      */
-    private static void replaceTilesWithCities(int count,  Color what) {
+    private static void replaceTilesWithCities(int count, Color what) {
         int placed = 0;
-        java.util.List<Point> capitals = new ArrayList<>();
 
         while (placed < count) {
             int row = random.nextInt(ROWS - 4) + 2; // At least 2 tiles from the edges and from other capitals
@@ -74,15 +79,15 @@ public class DesktopApp {
             JPanel tile = tiles[row][col];
 
             if (tile.getBackground().equals(LAND) && isFarEnough(row, col, capitals, 2)) {
-                tile.setBackground(CAPITAL);
-                capitals.add(new Point(row, col));
+                tile.setBackground(what);
+                capitals.add(new Point(row, col)); // kapitalokat tároljuk ide
                 placed++;
             }
         }
     }
 
-    private static boolean isFarEnough(int row, int col, java.util.List<Point> capitals, int minDistance) {
-        for (Point p : capitals) {
+    private static boolean isFarEnough(int row, int col, List<Point> points, int minDistance) {
+        for (Point p : points) {
             int dist = Math.abs(p.x - row) + Math.abs(p.y - col); // Manhattan distance
             if (dist < minDistance) {
                 return false; // túl közel
@@ -91,12 +96,43 @@ public class DesktopApp {
         return true; // jó hely
     }
 
+    private static void fillTheRestOfTheMapWithVillages() {
+        // total tiles = ROWS * COLS
+        int totalTiles = ROWS * COLS;
+        int count = totalTiles / 20 - capitals.size(); // alapértelmezett falu szám
+
+        if (count < 0) count = 0; // negatív érték esetén nulla
+
+        fillTheRestOfTheMapWithVillages(count);
+    }
+
     /**
      * fills the world with villages with SOME STRICT RULES:
      * finds the spots that are far enough (at least 2 tiles) from capitals and other villages.
      * Villages can spawn on water.
+     * @param count number of villages to place
      */
-    private static void fillTheRestOfTheMapWithVillages() {
+    private static void fillTheRestOfTheMapWithVillages(int count) {
+        int placed = 0;
+
+        while (placed < count) {
+            int row = random.nextInt(ROWS - 4) + 2; // legalább 2 csempe távol a szélektől
+            int col = random.nextInt(COLS - 4) + 2;
+
+            JPanel tile = tiles[row][col];
+
+            // Falvak bárhol lehetnek (víz vagy föld)
+            // Viszont legalább 2 távol a kapitaloktól és a többi falutól
+            if (isFarEnough(row, col, capitals, 2) && isFarEnough(row, col, villages, 2)) {
+                // Csak akkor állítsuk barna színűre, ha még nem capital vagy falu
+                Color bg = tile.getBackground();
+                if (!bg.equals(CAPITAL) && !bg.equals(VILLAGE)) {
+                    tile.setBackground(VILLAGE);
+                    villages.add(new Point(row, col));
+                    placed++;
+                }
+            }
+        }
     }
 
 

@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;  // <-- ide kell!
 import java.util.Random;
 
 public class DesktopApp {
@@ -56,17 +58,30 @@ public class DesktopApp {
 
     private static void replaceTilesWithTribeCapitals(int count) {
         int placed = 0;
+        java.util.List<Point> capitals = new ArrayList<>();
 
         while (placed < count) {
-            int row = random.nextInt(ROWS - 2) + 1; // avoid borders
-            int col = random.nextInt(COLS - 2) + 1;
+            int row = random.nextInt(ROWS - 4) + 2; // At least 2 tiles from the edges and from other capitals
+            int col = random.nextInt(COLS - 4) + 2;
 
             JPanel tile = tiles[row][col];
 
-            if (tile.getBackground().equals(LAND)) {
+            if (tile.getBackground().equals(LAND) && isFarEnough(row, col, capitals, 2)) {
                 tile.setBackground(CAPITAL);
+                capitals.add(new Point(row, col));
                 placed++;
             }
         }
+    }
+
+    private static boolean isFarEnough(int row, int col, java.util.List<Point> capitals, int minDistance) {
+        for (Point p : capitals) {
+            int dist = Math.abs(p.x - row) + Math.abs(p.y - col); // Manhattan distance
+            if (dist < minDistance) {
+                return false; // túl közel
+            }
         }
+        return true; // jó hely
+    }
+
 }

@@ -16,7 +16,7 @@ public class Main {
 
   public static void main(String[] args) {
       desktop();
-      console();
+//      console();
   }
 
     private static void desktop() {

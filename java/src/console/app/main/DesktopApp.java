@@ -13,15 +13,15 @@ import java.util.Random;
 
 public class DesktopApp {
 
-    private static final int ROWS = 18;
-    private static final int COLS = 18;
+    private static final int ROWS = 30;
+    private static final int COLS = 30;
     private static final double SCALE = Archi.Scale; // lower = larger regions
     private static final double FOREST_RATE = .2;
 
     private static final Color LAND = Color.WHITE;
     private static final Color FOREST = new Color(19, 85, 0);
     private static final Color WATER = Color.BLUE;
-    private static final Color CAPITAL = new Color(89, 45, 1); // red
+    private static final Color CAPITAL = new Color(0, 0, 0); // red
     private static final Color MOUNTAIN = new Color(133, 133, 133, 255); // gray
     private static final Color VILLAGE = new Color(139, 75, 19); // brown
 

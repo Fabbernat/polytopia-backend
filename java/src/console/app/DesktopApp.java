@@ -70,12 +70,12 @@ public class DesktopApp {
     }
 
 
-
     /**
      * puts the given number of cities (capital or village) to the map with SOME STRICT RULES:
      * no city can be within minDistance tiles of the edge of the map or each other
+     *
      * @param count number of cities to place
-     * @param what color to paint
+     * @param what  color to paint
      */
     private static void replaceTilesWithCities(int count, Color what) {
         int placed = 0;
@@ -128,6 +128,7 @@ public class DesktopApp {
      * fills the world with villages with SOME STRICT RULES:
      * finds the spots that are far enough (at least 2 tiles) from capitals and other villages.
      * Villages can spawn on water.
+     *
      * @param count number of villages to place
      */
     private static void GenerateMountains(int count) {
@@ -154,16 +155,18 @@ public class DesktopApp {
     }
 
     private static void FillTheRestOfTheWorldWithVillages() {
+        int increasingMagicNumber = 40;
+
         int totalTiles = ROWS * COLS;
-        int villageCount = totalTiles / 35 - capitals.size();
+        int villageCount = totalTiles / increasingMagicNumber - capitals.size();
 
         if (villageCount <= 0) {
             return;
         }
 
         int placed = 0;
-
-        while (placed < villageCount) {
+        int nOfIterations = 0;
+        while (placed < villageCount && nOfIterations < 20) {
             int row = random.nextInt(ROWS - 4) + 2;
             int col = random.nextInt(COLS - 4) + 2;
 
@@ -177,9 +180,9 @@ public class DesktopApp {
             tile.setBackground(VILLAGE);
             villages.add(new Point(row, col));
             placed++;
+            nOfIterations++;
         }
     }
-
 
 
 }

@@ -15,12 +15,14 @@ public class DesktopApp {
 
     private static final int ROWS = 18;
     private static final int COLS = 18;
-    private static final double SCALE = Lakes.Scale; // lower = larger regions
+    private static final double SCALE = Archi.Scale; // lower = larger regions
+    private static final double FOREST_RATE = .2;
 
-    private static final Color LAND = Color.GREEN;
+    private static final Color LAND = Color.WHITE;
+    private static final Color FOREST = new Color(19, 85, 0);
     private static final Color WATER = Color.BLUE;
-    private static final Color CAPITAL = new Color(255, 0, 0); // red
-    private static final Color MOUNTAIN = new Color(124, 124, 124, 255); // gray
+    private static final Color CAPITAL = new Color(89, 45, 1); // red
+    private static final Color MOUNTAIN = new Color(133, 133, 133, 255); // gray
     private static final Color VILLAGE = new Color(139, 75, 19); // brown
 
     private static final JPanel[][] tiles = new JPanel[ROWS][COLS];
@@ -51,7 +53,11 @@ public class DesktopApp {
                 double value = noise.noise(row * SCALE, col * SCALE);
                 double normalized = (value + 1) / 2.0; // zajgyártás
 
-                tile.setBackground(normalized > Lakes.WaterLandRatio ? LAND : WATER); // .56 for archi
+                tile.setBackground(normalized > Archi.WaterLandRatio ? LAND : WATER); // .56 for archi
+                boolean isForest = random.nextInt(100) / 100.0 < FOREST_RATE;
+                if (isForest) {
+                    tile.setBackground(FOREST);
+                }
                 tile.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
                 tiles[row][col] = tile;
@@ -60,7 +66,7 @@ public class DesktopApp {
         }
 
         // 2️⃣ Place tribe capitals AFTER generation
-        replaceTilesWithCities(2, CAPITAL);
+        replaceTilesWithCities(4, CAPITAL);
         FillTheRestOfTheWorldWithVillages();
         GenerateMountains(); // pl. 10 hegy
 
@@ -93,16 +99,6 @@ public class DesktopApp {
                 placed++;
             }
         }
-    }
-
-    private static boolean isMountainFarEnough(int row, int col, List<Point> points, int minDistance) {
-        for (Point p : points) {
-            int dist = Math.abs(p.x - row) + Math.abs(p.y - col); // Manhattan distance
-            if (dist <= minDistance - 2) {
-                return false; // túl közel
-            }
-        }
-        return true; // jó hely
     }
 
     private static boolean isVillageFarEnough(int row, int col, List<Point> points, int minDistance) {
@@ -143,20 +139,19 @@ public class DesktopApp {
 
             // Falvak bárhol lehetnek (víz vagy föld)
             // Viszont legalább 2 távol a kapitaloktól és a többi hegytől
-            if (isMountainFarEnough(row, col, capitals, 2) && isMountainFarEnough(row, col, mountains, 2)) {
-                // Csak akkor állítsuk barna színűre, ha még nem capital vagy hegy
-                Color bg = tile.getBackground();
-                if (!bg.equals(WATER) && !bg.equals(CAPITAL) && !bg.equals(MOUNTAIN)) {
-                    tile.setBackground(MOUNTAIN);
-                    mountains.add(new Point(row, col));
-                    placed++;
-                }
+            // Csak akkor állítsuk barna színűre, ha még nem capital vagy hegy
+            Color bg = tile.getBackground();
+            if (!bg.equals(WATER) && !bg.equals(CAPITAL) && !bg.equals(MOUNTAIN)) {
+                tile.setBackground(MOUNTAIN);
+                mountains.add(new Point(row, col));
+                placed++;
             }
+
         }
     }
 
     private static void FillTheRestOfTheWorldWithVillages() {
-        int increasingMagicNumber = 25;
+        int increasingMagicNumber = 20;
         int totalTiles = ROWS * COLS;
         int villageCount = totalTiles / increasingMagicNumber - capitals.size();
 

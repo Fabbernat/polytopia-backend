@@ -1,5 +1,7 @@
 package console.app;
 
+import jdk.jshell.spi.ExecutionControl;
+
 import javax.swing.*;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -10,20 +12,23 @@ import java.util.Random;
 
 public class DesktopApp {
 
-    private static final int ROWS = 30;
-    private static final int COLS = 30;
-    private static final double SCALE = 0.18; // lower = larger regions
+    private static final int ROWS = 16;
+    private static final int COLS = 16;
+    private static final double SCALE = 0.4; // lower = larger regions
 
     private static final Color LAND = Color.GREEN;
     private static final Color WATER = Color.BLUE;
-    private static final Color CAPITAL = new Color(117, 117, 117); // gray
-    private static final Color VILLAGE = new Color(139, 75, 19, 255); // brown
+    private static final Color CAPITAL = new Color(255, 0, 0);
+    private static final Color MOUNTAIN = new Color(124, 124, 124, 255);
+    private static final Color VILLAGE = new Color(139, 75, 19);
 
     private static final JPanel[][] tiles = new JPanel[ROWS][COLS];
     private static final Random random = new Random();
 
     // Statikus lista a kapitalok pozícióinak tárolására
     private static final List<Point> capitals = new ArrayList<>();
+    // Statikus lista a hegyek pozícióinak tárolására
+    private static final List<Point> mountains = new ArrayList<>();
     // Statikus lista a falvak pozícióinak tárolására
     private static final List<Point> villages = new ArrayList<>();
 
@@ -45,7 +50,7 @@ public class DesktopApp {
                 double value = noise.noise(row * SCALE, col * SCALE);
                 double normalized = (value + 1) / 2.0;
 
-                tile.setBackground(normalized > 0.45 ? LAND : WATER);
+                tile.setBackground(normalized > 0.56 ? LAND : WATER);
                 tile.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
                 tiles[row][col] = tile;
@@ -54,14 +59,17 @@ public class DesktopApp {
         }
 
         // 2️⃣ Place tribe capitals AFTER generation
-        replaceTilesWithCities(4, CAPITAL);
-        fillTheRestOfTheMapWithVillages(); // pl. 10 falu
+        replaceTilesWithCities(2, CAPITAL);
+        GenerateMountains(); // pl. 10 hegy
+        FillTheRestOfTheWorldWithVillages();
 
         frame.add(gridPanel);
         frame.setSize(600, 600);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+
+
 
     /**
      * puts the given number of cities (capital or village) to the map with SOME STRICT RULES:
@@ -78,7 +86,7 @@ public class DesktopApp {
 
             JPanel tile = tiles[row][col];
 
-            if (tile.getBackground().equals(LAND) && isFarEnough(row, col, capitals, 2)) {
+            if (tile.getBackground().equals(LAND) && isVillageFarEnough(row, col, capitals, 2)) {
                 tile.setBackground(what);
                 capitals.add(new Point(row, col)); // kapitalokat tároljuk ide
                 placed++;
@@ -86,24 +94,34 @@ public class DesktopApp {
         }
     }
 
-    private static boolean isFarEnough(int row, int col, List<Point> points, int minDistance) {
+    private static boolean isMountainFarEnough(int row, int col, List<Point> points, int minDistance) {
         for (Point p : points) {
             int dist = Math.abs(p.x - row) + Math.abs(p.y - col); // Manhattan distance
-            if (dist < minDistance) {
+            if (dist <= minDistance - 2) {
                 return false; // túl közel
             }
         }
         return true; // jó hely
     }
 
-    private static void fillTheRestOfTheMapWithVillages() {
+    private static boolean isVillageFarEnough(int row, int col, List<Point> points, int minDistance) {
+        for (Point p : points) {
+            int dist = Math.abs(p.x - row) + Math.abs(p.y - col); // Manhattan distance
+            if (dist < minDistance + 2) {
+                return false; // túl közel
+            }
+        }
+        return true; // jó hely
+    }
+
+    private static void GenerateMountains() {
         // total tiles = ROWS * COLS
         int totalTiles = ROWS * COLS;
-        int count = totalTiles / 20 - capitals.size(); // alapértelmezett falu szám
+        int count = totalTiles / 17 - capitals.size(); // alapértelmezett hegy szám
 
         if (count < 0) count = 0; // negatív érték esetén nulla
 
-        fillTheRestOfTheMapWithVillages(count);
+        GenerateMountains(count);
     }
 
     /**
@@ -112,7 +130,7 @@ public class DesktopApp {
      * Villages can spawn on water.
      * @param count number of villages to place
      */
-    private static void fillTheRestOfTheMapWithVillages(int count) {
+    private static void GenerateMountains(int count) {
         int placed = 0;
 
         while (placed < count) {
@@ -122,18 +140,46 @@ public class DesktopApp {
             JPanel tile = tiles[row][col];
 
             // Falvak bárhol lehetnek (víz vagy föld)
-            // Viszont legalább 2 távol a kapitaloktól és a többi falutól
-            if (isFarEnough(row, col, capitals, 2) && isFarEnough(row, col, villages, 2)) {
-                // Csak akkor állítsuk barna színűre, ha még nem capital vagy falu
+            // Viszont legalább 2 távol a kapitaloktól és a többi hegytől
+            if (isMountainFarEnough(row, col, capitals, 2) && isMountainFarEnough(row, col, mountains, 2)) {
+                // Csak akkor állítsuk barna színűre, ha még nem capital vagy hegy
                 Color bg = tile.getBackground();
-                if (!bg.equals(CAPITAL) && !bg.equals(VILLAGE)) {
-                    tile.setBackground(VILLAGE);
-                    villages.add(new Point(row, col));
+                if (!bg.equals(WATER) && !bg.equals(CAPITAL) && !bg.equals(MOUNTAIN)) {
+                    tile.setBackground(MOUNTAIN);
+                    mountains.add(new Point(row, col));
                     placed++;
                 }
             }
         }
     }
+
+    private static void FillTheRestOfTheWorldWithVillages() {
+        int totalTiles = ROWS * COLS;
+        int villageCount = totalTiles / 35 - capitals.size();
+
+        if (villageCount <= 0) {
+            return;
+        }
+
+        int placed = 0;
+
+        while (placed < villageCount) {
+            int row = random.nextInt(ROWS - 4) + 2;
+            int col = random.nextInt(COLS - 4) + 2;
+
+            JPanel tile = tiles[row][col];
+
+            // Distance rules
+            if (!isVillageFarEnough(row, col, capitals, 2)) continue;
+            if (!isVillageFarEnough(row, col, mountains, 2)) continue;
+            if (!isVillageFarEnough(row, col, villages, 2)) continue;
+
+            tile.setBackground(VILLAGE);
+            villages.add(new Point(row, col));
+            placed++;
+        }
+    }
+
 
 
 }

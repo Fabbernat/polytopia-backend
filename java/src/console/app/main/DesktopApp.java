@@ -1,6 +1,6 @@
-package console.app;
+package console.app.main;
 
-import jdk.jshell.spi.ExecutionControl;
+import console.app.PerlinNoise;
 
 import javax.swing.*;
 import javax.swing.JFrame;
@@ -15,13 +15,13 @@ public class DesktopApp {
 
     private static final int ROWS = 18;
     private static final int COLS = 18;
-    private static final double SCALE = 0.4; // lower = larger regions
+    private static final double SCALE = Lakes.Scale; // lower = larger regions
 
     private static final Color LAND = Color.GREEN;
     private static final Color WATER = Color.BLUE;
-    private static final Color CAPITAL = new Color(255, 0, 0);
-    private static final Color MOUNTAIN = new Color(124, 124, 124, 255);
-    private static final Color VILLAGE = new Color(139, 75, 19);
+    private static final Color CAPITAL = new Color(255, 0, 0); // red
+    private static final Color MOUNTAIN = new Color(124, 124, 124, 255); // gray
+    private static final Color VILLAGE = new Color(139, 75, 19); // brown
 
     private static final JPanel[][] tiles = new JPanel[ROWS][COLS];
     private static final Random random = new Random();
@@ -41,7 +41,7 @@ public class DesktopApp {
         JFrame frame = new JFrame("Polytopia");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JPanel gridPanel = new JPanel(new GridLayout(ROWS, COLS));
+        JPanel gridPanel = new JPanel(new GridLayout(ROWS, COLS)); // csinál egy ROWS * COLS méretű táblát
         PerlinNoise noise = new PerlinNoise(System.currentTimeMillis());
 
         for (int row = 0; row < ROWS; row++) {
@@ -49,9 +49,9 @@ public class DesktopApp {
                 JPanel tile = new JPanel();
 
                 double value = noise.noise(row * SCALE, col * SCALE);
-                double normalized = (value + 1) / 2.0;
+                double normalized = (value + 1) / 2.0; // zajgyártás
 
-                tile.setBackground(normalized > 0.56 ? LAND : WATER);
+                tile.setBackground(normalized > Lakes.WaterLandRatio ? LAND : WATER); // .56 for archi
                 tile.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
                 tiles[row][col] = tile;
@@ -61,8 +61,8 @@ public class DesktopApp {
 
         // 2️⃣ Place tribe capitals AFTER generation
         replaceTilesWithCities(2, CAPITAL);
-        GenerateMountains(); // pl. 10 hegy
         FillTheRestOfTheWorldWithVillages();
+        GenerateMountains(); // pl. 10 hegy
 
         frame.add(gridPanel);
         frame.setSize(600, 600);
@@ -156,7 +156,7 @@ public class DesktopApp {
     }
 
     private static void FillTheRestOfTheWorldWithVillages() {
-        int increasingMagicNumber = 35;
+        int increasingMagicNumber = 25;
         int totalTiles = ROWS * COLS;
         int villageCount = totalTiles / increasingMagicNumber - capitals.size();
 
@@ -177,7 +177,6 @@ public class DesktopApp {
 
                 // Check distance from capitals and mountains only (ignore villages here)
                 if (!isVillageFarEnough(row, col, capitals, 2)) continue;
-                if (!isVillageFarEnough(row, col, mountains, 2)) continue;
 
                 candidates.add(new Point(row, col));
             }
@@ -202,7 +201,4 @@ public class DesktopApp {
             villages.add(candidate);
         }
     }
-
-
-
 }

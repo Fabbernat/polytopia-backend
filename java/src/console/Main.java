@@ -2,7 +2,7 @@ package console;
 
 import console.app.ConsoleApp;
 import console.app.ConsoleAppUtils;
-import console.app.DesktopApp;
+import console.app.main.DesktopApp;
 
 import java.util.Scanner;
 

@@ -7,13 +7,14 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 public class DesktopApp {
 
-    private static final int ROWS = 16;
-    private static final int COLS = 16;
+    private static final int ROWS = 18;
+    private static final int COLS = 18;
     private static final double SCALE = 0.4; // lower = larger regions
 
     private static final Color LAND = Color.GREEN;
@@ -155,8 +156,7 @@ public class DesktopApp {
     }
 
     private static void FillTheRestOfTheWorldWithVillages() {
-        int increasingMagicNumber = 40;
-
+        int increasingMagicNumber = 35;
         int totalTiles = ROWS * COLS;
         int villageCount = totalTiles / increasingMagicNumber - capitals.size();
 
@@ -164,25 +164,45 @@ public class DesktopApp {
             return;
         }
 
-        int placed = 0;
-        int nOfIterations = 0;
-        while (placed < villageCount && nOfIterations < 20) {
-            int row = random.nextInt(ROWS - 4) + 2;
-            int col = random.nextInt(COLS - 4) + 2;
+        List<Point> candidates = new ArrayList<>();
 
-            JPanel tile = tiles[row][col];
+        // Collect all valid candidate tiles first
+        for (int row = 1; row < ROWS - 1; row++) {
+            for (int col = 1; col < COLS - 1; col++) {
+                JPanel tile = tiles[row][col];
+                Color bg = tile.getBackground();
 
-            // Distance rules
-            if (!isVillageFarEnough(row, col, capitals, 2)) continue;
-            if (!isVillageFarEnough(row, col, mountains, 2)) continue;
-            if (!isVillageFarEnough(row, col, villages, 2)) continue;
+                // Must be LAND or WATER and not already village, capital, mountain
+                if (!bg.equals(LAND) && !bg.equals(WATER)) continue;
 
-            tile.setBackground(VILLAGE);
-            villages.add(new Point(row, col));
-            placed++;
-            nOfIterations++;
+                // Check distance from capitals and mountains only (ignore villages here)
+                if (!isVillageFarEnough(row, col, capitals, 2)) continue;
+                if (!isVillageFarEnough(row, col, mountains, 2)) continue;
+
+                candidates.add(new Point(row, col));
+            }
+        }
+
+        // Shuffle candidate list for randomness
+        Collections.shuffle(candidates, random);
+
+        villages.clear();
+
+        // Try to place as many villages as possible without violating distance to other villages
+        for (Point candidate : candidates) {
+            if (villages.size() >= villageCount) break;
+
+            // Check distance to already placed villages
+            if (!isVillageFarEnough(candidate.x, candidate.y, villages, 2)) {
+                continue;
+            }
+
+            // Place village
+            tiles[candidate.x][candidate.y].setBackground(VILLAGE);
+            villages.add(candidate);
         }
     }
+
 
 
 }

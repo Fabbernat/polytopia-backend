@@ -22,7 +22,7 @@ public class DesktopApp {
 
 
     // Maptype and generation-related settings
-    private static MapType mapType = null;
+    private static MapType mapType = MapType.LAKES;
     private static final double FOREST_RATE = .2;
 
     // Terrains
@@ -52,7 +52,12 @@ public class DesktopApp {
     public DesktopApp(String choice) {
         log("DesktopApp mapType set to " + choice +
                 " scale=" + mapType.perlinScale);
-        int mapType = Integer.parseInt(choice);
+        int mapType = 0;
+        try {
+            mapType = Integer.parseInt(choice);
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException();
+        }
         DesktopApp.mapType = MapType.values()[mapType];
         SwingUtilities.invokeLater(DesktopApp::createAndShowUI);
     }

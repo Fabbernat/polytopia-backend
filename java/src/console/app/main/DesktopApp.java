@@ -11,17 +11,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import static console.Main.log;
+
 public class DesktopApp {
 
     // Gameplay settings
-    private static final int ROWS = 16;
-    private static final int COLS = 16;
+    private static final int ROWS = 20;
+    private static final int COLS = 20;
     private static final int NUMBER_OF_PLAYERS = 2;
 
 
     // Maptype and generation-related settings
     private static MapType mapType = new MapType("Lakes");
-    private static final double PERLIN_SCALE = mapType.PERLIN_SCALE; // lower = larger regions
+    private static final double PERLIN_SCALE = Archi.PERLIN_SCALE; // lower = larger regions
     private static final double FOREST_RATE = .2;
 
     // Terrains
@@ -47,11 +49,15 @@ public class DesktopApp {
     }
 
     public DesktopApp(String choice) {
-        SwingUtilities.invokeLater(DesktopApp::createAndShowUI);
         mapType = new MapType(choice);
+        log("DesktopApp mapType set to " + choice +
+                " scale=" + mapType.PERLIN_SCALE);
+        SwingUtilities.invokeLater(DesktopApp::createAndShowUI);
     }
 
     private static void createAndShowUI() {
+        log("Using PERLIN_SCALE=" + mapType.PERLIN_SCALE +
+                ", WATER_LAND_RATIO=" + mapType.WATER_LAND_RATIO);
         JFrame frame = new JFrame("Polytopia");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -62,7 +68,11 @@ public class DesktopApp {
             for (int col = 0; col < COLS; col++) {
                 JPanel tile = new JPanel();
 
-                double value = noise.noise(row * PERLIN_SCALE, col * PERLIN_SCALE);
+                double value = noise.noise(
+                        row * mapType.PERLIN_SCALE,
+                        col * mapType.PERLIN_SCALE
+                );
+
                 double normalized = (value + 1) / 2.0; // zajgyártás
 
                 tile.setBackground(normalized > mapType.WATER_LAND_RATIO ? LAND : WATER); // .56 for archi

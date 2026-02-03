@@ -16,12 +16,13 @@ public class Main {
 
   public static void main(String[] args) {
       Scanner scanner = new Scanner(System.in);
-      log("Choose map type!\n" +
-              "0 - Drylands" +
-              "1 - Lakes" +
-              "2- Conti" +
-              "3 - Archi" +
-              "4 - Water World");
+      log("""
+              Choose map type!
+              0 - Drylands
+              1 - Lakes
+              2- Conti
+              3 - Archi
+              4 - Water World""");
       String choice = scanner.nextLine();
       desktop(choice);
 //      console();

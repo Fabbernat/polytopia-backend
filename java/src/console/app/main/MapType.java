@@ -1,10 +1,13 @@
 package console.app.main;
 
+import static console.Main.log;
+
 public class MapType {
-    public double PERLIN_SCALE = -1;
-    public double WATER_LAND_RATIO = -1;
+    protected double PERLIN_SCALE = -1;
+    protected double WATER_LAND_RATIO = -1;
     protected String choice;
     public MapType(String choice) {
+        log("MapType constructor called with choice = " + choice);
         this.choice = choice;
         switch(choice) {
             case "Drylands":
@@ -27,5 +30,8 @@ public class MapType {
                 PERLIN_SCALE = WaterWorld.PERLIN_SCALE;
                 WATER_LAND_RATIO = WaterWorld.WATER_LAND_RATIO;
         }
+
+        log("MapType result: PERLIN_SCALE=" + PERLIN_SCALE +
+                ", WATER_LAND_RATIO=" + WATER_LAND_RATIO);
     }
 }

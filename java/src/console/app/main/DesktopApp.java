@@ -22,8 +22,7 @@ public class DesktopApp {
 
 
     // Maptype and generation-related settings
-    private static MapType mapType = new MapType("Lakes");
-    private static final double PERLIN_SCALE = Archi.PERLIN_SCALE; // lower = larger regions
+    private static MapType mapType = null;
     private static final double FOREST_RATE = .2;
 
     // Terrains
@@ -45,19 +44,22 @@ public class DesktopApp {
     private static final List<Point> villages = new ArrayList<>();
 
     public DesktopApp() {
+        int mapType = 1;
+        DesktopApp.mapType = MapType.values()[mapType];
         SwingUtilities.invokeLater(DesktopApp::createAndShowUI);
     }
 
     public DesktopApp(String choice) {
-        mapType = new MapType(choice);
         log("DesktopApp mapType set to " + choice +
-                " scale=" + mapType.PERLIN_SCALE);
+                " scale=" + mapType.perlinScale);
+        int mapType = Integer.parseInt(choice);
+        DesktopApp.mapType = MapType.values()[mapType];
         SwingUtilities.invokeLater(DesktopApp::createAndShowUI);
     }
 
     private static void createAndShowUI() {
-        log("Using PERLIN_SCALE=" + mapType.PERLIN_SCALE +
-                ", WATER_LAND_RATIO=" + mapType.WATER_LAND_RATIO);
+        log("Using PERLIN_SCALE=" + mapType.perlinScale +
+                ", WATER_LAND_RATIO=" + mapType.waterAndLandRatio);
         JFrame frame = new JFrame("Polytopia");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -69,13 +71,13 @@ public class DesktopApp {
                 JPanel tile = new JPanel();
 
                 double value = noise.noise(
-                        row * mapType.PERLIN_SCALE,
-                        col * mapType.PERLIN_SCALE
+                        row * mapType.perlinScale,
+                        col * mapType.perlinScale
                 );
 
                 double normalized = (value + 1) / 2.0; // zajgyártás
 
-                tile.setBackground(normalized > mapType.WATER_LAND_RATIO ? LAND : WATER); // .56 for archi
+                tile.setBackground(normalized > mapType.waterAndLandRatio ? LAND : WATER); // .56 for archi
                 boolean isForest = random.nextInt(100) / 100.0 < FOREST_RATE;
                 if (isForest) {
                     tile.setBackground(FOREST);

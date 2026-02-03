@@ -13,11 +13,18 @@ import java.util.Random;
 
 public class DesktopApp {
 
-    private static final int ROWS = 30;
-    private static final int COLS = 30;
-    private static final double SCALE = Archi.Scale; // lower = larger regions
+    // Gameplay settings
+    private static final int ROWS = 16;
+    private static final int COLS = 16;
+    private static final int NUMBER_OF_PLAYERS = 2;
+
+
+    // Maptype and generation-related settings
+    private static MapType mapType = new MapType("Lakes");
+    private static final double PERLIN_SCALE = mapType.PERLIN_SCALE; // lower = larger regions
     private static final double FOREST_RATE = .2;
 
+    // Terrains
     private static final Color LAND = Color.WHITE;
     private static final Color FOREST = new Color(19, 85, 0);
     private static final Color WATER = Color.BLUE;
@@ -39,6 +46,11 @@ public class DesktopApp {
         SwingUtilities.invokeLater(DesktopApp::createAndShowUI);
     }
 
+    public DesktopApp(String choice) {
+        SwingUtilities.invokeLater(DesktopApp::createAndShowUI);
+        mapType = new MapType(choice);
+    }
+
     private static void createAndShowUI() {
         JFrame frame = new JFrame("Polytopia");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -50,10 +62,10 @@ public class DesktopApp {
             for (int col = 0; col < COLS; col++) {
                 JPanel tile = new JPanel();
 
-                double value = noise.noise(row * SCALE, col * SCALE);
+                double value = noise.noise(row * PERLIN_SCALE, col * PERLIN_SCALE);
                 double normalized = (value + 1) / 2.0; // zajgyártás
 
-                tile.setBackground(normalized > Archi.WaterLandRatio ? LAND : WATER); // .56 for archi
+                tile.setBackground(normalized > mapType.WATER_LAND_RATIO ? LAND : WATER); // .56 for archi
                 boolean isForest = random.nextInt(100) / 100.0 < FOREST_RATE;
                 if (isForest) {
                     tile.setBackground(FOREST);
@@ -66,7 +78,7 @@ public class DesktopApp {
         }
 
         // 2️⃣ Place tribe capitals AFTER generation
-        replaceTilesWithCities(4, CAPITAL);
+        replaceTilesWithCities(NUMBER_OF_PLAYERS, CAPITAL);
         FillTheRestOfTheWorldWithVillages();
         GenerateMountains(); // pl. 10 hegy
 

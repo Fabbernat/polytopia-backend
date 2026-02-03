@@ -15,12 +15,20 @@ public class Main {
   static String farewellMessage = "Goodbye Mighty Ruler!";
 
   public static void main(String[] args) {
-      desktop();
+      Scanner scanner = new Scanner(System.in);
+      log("Choose map type!\n" +
+              "0 - Drylands" +
+              "1 - Lakes" +
+              "2- Conti" +
+              "3 - Archi" +
+              "4 - Water World");
+      String choice = scanner.nextLine();
+      desktop(choice);
 //      console();
   }
 
-    private static void desktop() {
-      DesktopApp desktopApp = new DesktopApp();
+    private static void desktop(String choice) {
+      DesktopApp desktopApp = new DesktopApp(choice);
     }
 
     private static void console() {

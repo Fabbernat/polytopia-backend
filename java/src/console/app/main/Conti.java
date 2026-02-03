@@ -1,6 +1,12 @@
 package console.app.main;
 
-public class Conti {
-    public static final double WaterLandRatio = .5;
-    public static final double Scale = .15;
+import java.io.Console;
+
+public class Conti extends MapType {
+    public static final double WATER_LAND_RATIO = .5;
+    public static final double PERLIN_SCALE = .15;
+
+    public Conti(String choice) {
+        super(choice);
+    }
 }

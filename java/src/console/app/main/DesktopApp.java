@@ -16,8 +16,8 @@ import static console.Main.log;
 public class DesktopApp {
 
     // Gameplay settings
-    private static final int ROWS = 20;
-    private static final int COLS = 20;
+    private static final int ROWS = 16;
+    private static final int COLS = 16;
     private static final int NUMBER_OF_PLAYERS = 2;
 
 
@@ -26,7 +26,7 @@ public class DesktopApp {
     private static final double FOREST_RATE = .2;
 
     // Terrains
-    private static final Color LAND = Color.WHITE;
+    private static final Color LAND = new Color(46, 168, 19);
     private static final Color FOREST = new Color(19, 85, 0);
     private static final Color WATER = Color.BLUE;
     private static final Color CAPITAL = new Color(0, 0, 0); // red
@@ -82,7 +82,7 @@ public class DesktopApp {
 
                 double normalized = (value + 1) / 2.0; // zajgyártás
 
-                tile.setBackground(normalized > mapType.waterAndLandRatio ? LAND : WATER); // .56 for archi
+                tile.setBackground(normalized > mapType.waterAndLandRatio ? LAND : WATER); //  for archi
                 boolean isForest = random.nextInt(100) / 100.0 < FOREST_RATE;
                 if (isForest) {
                     tile.setBackground(FOREST);

@@ -1,10 +1,10 @@
 package console.app.main;
 
 enum MapType {
-    DRYLANDS(0.4, 0.0),
-    LAKES(0.1, 0.4),
-        CONTI(.15,.5),
-    ARCHI(0.4, 0.56),
+    DRYLANDS(.4, .0),
+    LAKES(.1, .4),
+        CONTI(.1,.53),
+    ARCHI(.4, .56),
         WATER_WORLD(.4,.85);
 
     public final double perlinScale;     // lower = larger regions

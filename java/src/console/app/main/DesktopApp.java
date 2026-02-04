@@ -16,8 +16,8 @@ import static console.Main.log;
 public class DesktopApp {
 
     // Gameplay settings
-    private static final int ROWS = 16;
-    private static final int COLS = 16;
+    private static final int ROWS = 40;
+    private static final int COLS = 40;
     private static final int NUMBER_OF_PLAYERS = 2;
 
 
@@ -28,10 +28,12 @@ public class DesktopApp {
     // Terrains
     private static final Color LAND = new Color(46, 168, 19);
     private static final Color FOREST = new Color(19, 85, 0);
-    private static final Color WATER = Color.BLUE;
-    private static final Color CAPITAL = new Color(0, 0, 0); // red
-    private static final Color MOUNTAIN = new Color(133, 133, 133, 255); // gray
-    private static final Color VILLAGE = new Color(139, 75, 19); // brown
+    private static final Color OCEAN = Color.BLUE;
+    private static final Color WATER = new Color(75, 208, 255); // not used yet
+    private static final Color CAPITAL = new Color(0, 0, 0);
+    private static final Color MOUNTAIN = new Color(133, 133, 133, 255);
+    private static final Color VILLAGE = new Color(139, 75, 19);
+    private static final Color RUIN = new Color(255, 255, 1, 230);
 
     private static final JPanel[][] tiles = new JPanel[ROWS][COLS];
     private static final Random random = new Random();
@@ -82,9 +84,9 @@ public class DesktopApp {
 
                 double normalized = (value + 1) / 2.0; // zajgyártás
 
-                tile.setBackground(normalized > mapType.waterAndLandRatio ? LAND : WATER); //  for archi
+                tile.setBackground(normalized > mapType.waterAndLandRatio ? LAND : OCEAN); //  for archi
                 boolean isForest = random.nextInt(100) / 100.0 < FOREST_RATE;
-                if (isForest) {
+                if (isForest && !tile.getBackground().equals(OCEAN)) {
                     tile.setBackground(FOREST);
                 }
                 tile.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -170,7 +172,7 @@ public class DesktopApp {
             // Viszont legalább 2 távol a kapitaloktól és a többi hegytől
             // Csak akkor állítsuk barna színűre, ha még nem capital vagy hegy
             Color bg = tile.getBackground();
-            if (!bg.equals(WATER) && !bg.equals(CAPITAL) && !bg.equals(MOUNTAIN)) {
+            if (!bg.equals(OCEAN) && !bg.equals(CAPITAL) && !bg.equals(MOUNTAIN)) {
                 tile.setBackground(MOUNTAIN);
                 mountains.add(new Point(row, col));
                 placed++;
@@ -197,7 +199,7 @@ public class DesktopApp {
                 Color bg = tile.getBackground();
 
                 // Must be LAND or WATER and not already village, capital, mountain
-                if (!bg.equals(LAND) && !bg.equals(WATER)) continue;
+                if (!bg.equals(LAND) && !bg.equals(OCEAN)) continue;
 
                 // Check distance from capitals and mountains only (ignore villages here)
                 if (!isVillageFarEnough(row, col, capitals, 2)) continue;

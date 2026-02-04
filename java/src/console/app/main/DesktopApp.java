@@ -23,7 +23,7 @@ public class DesktopApp {
 
     // Maptype and generation-related settings
     private static MapType mapType = MapType.LAKES;
-    private static final double FOREST_RATE = .2;
+    private static final double FOREST_RATE = .3;
 
     // Terrains
     private static final Color LAND = new Color(46, 168, 19);
@@ -86,7 +86,7 @@ public class DesktopApp {
 
                 tile.setBackground(normalized > mapType.waterAndLandRatio ? LAND : OCEAN); //  for archi
                 boolean isForest = random.nextInt(100) / 100.0 < FOREST_RATE;
-                if (isForest && !tile.getBackground().equals(OCEAN)) {
+                if (isForest && tile.getBackground().equals(LAND)) {
                     tile.setBackground(FOREST);
                 }
                 tile.setBorder(BorderFactory.createLineBorder(Color.BLACK));

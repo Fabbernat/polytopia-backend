@@ -6,18 +6,17 @@ import javax.swing.*;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 
+import static console.Main.exit;
 import static console.Main.log;
 
 public class DesktopApp {
 
     // Gameplay settings
-    private static final int ROWS = 40;
-    private static final int COLS = 40;
+    private static final int ROWS = 30;
+    private static final int COLS = 30;
     private static final int NUMBER_OF_PLAYERS = 2;
 
 
@@ -58,7 +57,7 @@ public class DesktopApp {
         try {
             mapType = Integer.parseInt(choice);
         } catch (NumberFormatException e) {
-            throw new NumberFormatException();
+            exit(new Scanner(System.in));
         }
         DesktopApp.mapType = MapType.values()[mapType];
         SwingUtilities.invokeLater(DesktopApp::createAndShowUI);

@@ -17,8 +17,17 @@ public class Main {
 
   public static void main(String[] args) {
           Scanner scanner = new Scanner(System.in);
-//      console();
+
+      /*
+       * console app:
+       */
+      console(scanner);
+
+      /*
+       * desktop app:
+       */
       createLoop(scanner, "desktop");
+      exit(scanner);
   }
 
     private static void desktop(String choice) {
@@ -28,7 +37,6 @@ public class Main {
     private static void console(Scanner scanner) {
         ConsoleApp consoleApp = new ConsoleApp();
         createLoop(scanner, "console");
-        exit(scanner);
     }
 
     public static void exit(Scanner scanner) {
@@ -37,23 +45,23 @@ public class Main {
     }
 
     private static void createLoop(Scanner scanner, String appType) {
-        while (true) {
-            if ("console".equals(appType)) {
-                log("Polytopia CLI started. Type `start \"Game Name\"` or just `start` to start a new game.\n Example: start \"Misty Clouds\"\nType `help` to get the list of available commands.\n`exit` to quit.");
-            } else {
-                log("Polytopia Desktop app started. Press ENTER to start generating");
-            }
+        if ("console".equals(appType)) {
+            log("Polytopia CLI started. Type `start \"Game Name\"` or just `start` to start a new game.\n Example: start \"Misty Clouds\"\nType `help` to get the list of available commands.\n`exit` to quit.");
+        } else {
+            log("Polytopia Desktop app started. Press ENTER to start generating");
+        }
+      while (true) {
             System.out.print ("> ");
             String input = scanner.nextLine().trim();
             input = input.toLowerCase();
 
             if ("exit".equals(input) || "quit".equals(input)) {
                 log(farewellMessage);
-                break;
+                return;
             }
             if ("console".equals(appType)) {
                 ConsoleAppUtils.handleCommand(input);
-            } else {
+            } else if ("desktop".equals(appType)) {
                 log("""
                   Choose map type!
                   0 - Drylands

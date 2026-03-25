@@ -18,22 +18,23 @@ The `settings.py` file contains some settings variables that are mostly unused a
 these is the `CHANNEL_ATTRIBUTES` object, which contains descriptions of what each 'channel' in the game state array
 will correspond to.
 
+---
 # Fabbernat's contribution:
 <img width="1914" height="1152" alt="image" src="https://github.com/user-attachments/assets/e063eb02-6bdc-4e72-b2ac-7750755d4ca2" />
 The "Drylands" map type
-
+---
 <img width="580" height="586" alt="image" src="https://github.com/user-attachments/assets/0de15548-015f-4e6a-88dc-d970d7dffb5b" />
 The "Lakes" map type
-
+---
 <img width="577" height="585" alt="image" src="https://github.com/user-attachments/assets/f7925ea4-0645-4c31-9a99-101994bde225" />
 The "Continents" map type
-
+---
 <img width="577" height="583" alt="image" src="https://github.com/user-attachments/assets/6fe27709-9ed7-45ba-a4a2-9c5ef99873b0" />
 The "Archipelagos" map type
-
+---
 <img width="1920" height="1160" alt="image" src="https://github.com/user-attachments/assets/6d13d709-33d4-4002-bd22-1e60bd52de0e" />
 The "Continents" map type, but BIGGER
-
+---
 
 - I made a frontend to this at [github.com/Fabbernat/Polytopia-frontend](https://github.com/Fabbernat/Polytopia-frontend) built in ASP.NET
 - I added a COMPLETE terrain generation module

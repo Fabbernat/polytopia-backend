@@ -1,4 +1,6 @@
-﻿# Read Me:
+For the frontend see [github.com/Fabbernat/Polytopia-frontend](https://github.com/Fabbernat/Polytopia-frontend)
+ 
+ # Read Me:
 
 Welcome to the `polytopia_python` repo! Have a look around and familiarise yourself with some of the code that's already
 here.
@@ -18,7 +20,7 @@ will correspond to.
 
 # Fabbernat's contribution:
 
-Polytopia UI can be found at https://github.com/Fabbernat/Polytopia as an ASP.NET consoleApp.
+Polytopia UI can be found at [github.com/Fabbernat/Polytopia-frontend](https://github.com/Fabbernat/Polytopia-frontend) as an ASP.NET consoleApp.
 
 I've added a score counter Python module and a Java console consoleApp
 
